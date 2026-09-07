@@ -14,13 +14,13 @@ A Flask-based Hospital Management System for managing doctors, patients, booking
 ## Project Structure
 
 ```text
-Hospital-Management-System-dbmsminiproject-main/
-└── hospital system/
-    └── PROJECT/
-        ├── main.py
-        ├── static/
-        ├── templates/
-        └── hms.db
+backend/
+├── main.py
+├── requirements.txt
+└── hms.db
+frontend/
+├── static/
+└── templates/
 ```
 
 ## Requirements
@@ -28,16 +28,16 @@ Hospital-Management-System-dbmsminiproject-main/
 Install dependencies using:
 
 ```bash
-pip install Flask Flask-SQLAlchemy Flask-Login
+pip install -r backend/requirements.txt
 ```
 
 ## Run the Project
 
-1. Open a terminal in the project folder.
+1. Open a terminal in the project root.
 2. Run:
 
 ```bash
-python main.py
+python backend/main.py
 ```
 
 3. Open the app in your browser:
