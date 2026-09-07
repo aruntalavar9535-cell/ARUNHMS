@@ -1,3 +1,4 @@
+import os
 from flask import Flask,render_template,request,session,redirect,url_for,flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
@@ -13,6 +14,11 @@ import json
 local_server= True
 app = Flask(__name__)
 app.secret_key='hmsprojects'
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'hms.db')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f'sqlite:///{DB_PATH}')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 # this is for getting unique user access
@@ -39,9 +45,10 @@ def load_user(user_id):
 
 
 # app.config['SQLALCHEMY_DATABASE_URL']='mysql://username:password@localhost/databas_table_name'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/hms'
 db=SQLAlchemy(app)
 
+with app.app_context():
+    db.create_all()
 
 
 # here we will create db models that is tables
@@ -227,7 +234,7 @@ def signup():
         # encpassword=generate_password_hash(password)
         if user:
             flash("Email Already Exist","warning")
-            return render_template('/signup.html')
+            return render_template('signup.html')
 
         # new_user=db.engine.execute(f"INSERT INTO `user` (`username`,`usertype`,`email`,`password`) VALUES ('{username}','{usertype}','{email}','{encpassword}')")
         myquery=User(username=username,usertype=usertype,email=email,password=password)
@@ -307,5 +314,6 @@ def search():
 
 
 
-app.run(debug=True)    
+if __name__ == '__main__':
+    app.run(debug=True)
 
